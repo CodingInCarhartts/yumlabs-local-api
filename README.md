@@ -1,98 +1,465 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Research Document API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A NestJS-based REST API for managing research documents with MongoDB integration. This API allows you to create, read, and organize research documents with structured content, key findings, sources, and categorization.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Features
 
-## Description
+- 📄 **Research Document Management**: Create and retrieve research documents
+- 🏷️ **Categorization & Tagging**: Organize documents by category and tags
+- 📊 **Structured Content**: Support for sections, key findings, and sources
+- 🔍 **Filtering**: Query documents by category or tags
+- 🕒 **Timestamps**: Automatic creation and update timestamps
+- 🏗️ **Built with NestJS**: Scalable and maintainable architecture
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Tech Stack
 
-## Project setup
+- **Framework**: NestJS
+- **Database**: MongoDB with Mongoose ODM
+- **Language**: TypeScript
+- **Validation**: Built-in NestJS validation
 
-```bash
-$ npm install
-```
+## Prerequisites
 
-## Compile and run the project
+- Node.js (>=20.0.0)
+- npm (>=10.0.0)
+- MongoDB (running locally on port 27017)
+
+## Installation
 
 ```bash
-# development
-$ npm run start
+# Clone the repository
+git clone <repository-url>
+cd <project-directory>
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+# Install dependencies
+npm install
 ```
 
-## Run tests
+## Environment Setup
+
+Make sure MongoDB is running locally on the default port (27017). The application connects to `mongodb://localhost:27017/nestjs-app`.
+
+## Running the Application
 
 ```bash
-# unit tests
-$ npm run test
+# Development mode (with hot reload)
+npm run start:dev
 
-# e2e tests
-$ npm run test:e2e
+# Production mode
+npm run start:prod
 
-# test coverage
-$ npm run test:cov
+# Build only
+npm run build
 ```
 
-## Deployment
+The API will be available at `http://localhost:3000`.
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## API Documentation
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+The API documentation is auto-generated using Swagger and available at:
+
+**Swagger UI**: `http://localhost:3000/api`
+
+### Base URL
+
+```
+http://localhost:3000
+```
+
+### Endpoints
+
+#### 1. Health Check
+
+**GET** `/`
+
+Returns a simple hello message to verify the API is running.
+
+**Response:**
+
+```json
+"Hello World!"
+```
+
+#### 2. Create Research Document
+
+**POST** `/research-docs`
+
+Creates a new research document.
+
+**Request Body:**
+
+```json
+{
+  "title": "Rust Performance Analysis",
+  "content": "Detailed analysis of Rust's performance characteristics and benchmarks...",
+  "sections": [
+    {
+      "heading": "Memory Safety",
+      "content": "Rust's ownership system prevents common memory errors..."
+    },
+    {
+      "heading": "Zero-Cost Abstractions",
+      "content": "Rust provides high-level abstractions without runtime overhead..."
+    }
+  ],
+  "keyFindings": [
+    "Zero-cost abstractions",
+    "Memory safety guarantees",
+    "Excellent performance benchmarks"
+  ],
+  "sources": [
+    {
+      "title": "The Rust Programming Language Book",
+      "url": "https://doc.rust-lang.org/book/"
+    },
+    {
+      "title": "Rust Performance Book",
+      "url": "https://nnethercote.github.io/perf-book/"
+    }
+  ],
+  "category": "Rust",
+  "tags": ["performance", "memory-safety", "systems-programming"]
+}
+```
+
+**Response (201 Created):**
+
+```json
+{
+  "_id": "64f1a2b3c4d5e6f7g8h9i0j1",
+  "title": "Rust Performance Analysis",
+  "content": "Detailed analysis of Rust's performance characteristics and benchmarks...",
+  "sections": [
+    {
+      "heading": "Memory Safety",
+      "content": "Rust's ownership system prevents common memory errors..."
+    }
+  ],
+  "keyFindings": [
+    "Zero-cost abstractions",
+    "Memory safety guarantees",
+    "Excellent performance benchmarks"
+  ],
+  "sources": [
+    {
+      "title": "The Rust Programming Language Book",
+      "url": "https://doc.rust-lang.org/book/"
+    }
+  ],
+  "category": "Rust",
+  "tags": ["performance", "memory-safety", "systems-programming"],
+  "createdAt": "2024-01-15T10:30:00.000Z",
+  "updatedAt": "2024-01-15T10:30:00.000Z"
+}
+```
+
+#### 3. Get All Research Documents
+
+**GET** `/research-docs`
+
+Retrieves all research documents with optional filtering.
+
+**Query Parameters:**
+
+- `category` (optional): Filter by category (e.g., `?category=Rust`)
+- `tags` (optional): Filter by tags (comma-separated, e.g., `?tags=performance,memory-safety`)
+
+**Examples:**
+
+```
+GET /research-docs
+GET /research-docs?category=Rust
+GET /research-docs?tags=performance,memory-safety
+```
+
+**Response (200 OK):**
+
+```json
+[
+  {
+    "_id": "64f1a2b3c4d5e6f7g8h9i0j1",
+    "title": "Rust Performance Analysis",
+    "content": "Detailed analysis of Rust's performance characteristics...",
+    "category": "Rust",
+    "tags": ["performance", "memory-safety"],
+    "createdAt": "2024-01-15T10:30:00.000Z",
+    "updatedAt": "2024-01-15T10:30:00.000Z"
+  }
+]
+```
+
+#### 4. Get Research Document by ID
+
+**GET** `/research-docs/:id`
+
+Retrieves a specific research document by its ID.
+
+**Path Parameters:**
+
+- `id`: MongoDB ObjectId of the research document
+
+**Example:**
+
+```
+GET /research-docs/64f1a2b3c4d5e6f7g8h9i0j1
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "_id": "64f1a2b3c4d5e6f7g8h9i0j1",
+  "title": "Rust Performance Analysis",
+  "content": "Detailed analysis of Rust's performance characteristics and benchmarks...",
+  "sections": [
+    {
+      "heading": "Memory Safety",
+      "content": "Rust's ownership system prevents common memory errors..."
+    }
+  ],
+  "keyFindings": ["Zero-cost abstractions", "Memory safety guarantees"],
+  "sources": [
+    {
+      "title": "The Rust Programming Language Book",
+      "url": "https://doc.rust-lang.org/book/"
+    }
+  ],
+  "category": "Rust",
+  "tags": ["performance", "memory-safety"],
+  "createdAt": "2024-01-15T10:30:00.000Z",
+  "updatedAt": "2024-01-15T10:30:00.000Z"
+}
+```
+
+**Error Response (404 Not Found):**
+
+```json
+{
+  "statusCode": 404,
+  "message": "Research document not found"
+}
+```
+
+#### 5. Create Chat Message
+
+**POST** `/chat-messages`
+
+Creates a new chat message conversation.
+
+**Request Body:**
+
+```json
+{
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hello, how are you?"
+    },
+    {
+      "role": "assistant",
+      "content": "I'm doing well, thank you!"
+    }
+  ],
+  "userId": "user123",
+  "conversationId": "conv456"
+}
+```
+
+**Response (201 Created):**
+
+```json
+{
+  "_id": "64f1a2b3c4d5e6f7g8h9i0j2",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hello, how are you?"
+    },
+    {
+      "role": "assistant",
+      "content": "I'm doing well, thank you!"
+    }
+  ],
+  "userId": "user123",
+  "conversationId": "conv456",
+  "createdAt": "2024-01-15T10:35:00.000Z",
+  "updatedAt": "2024-01-15T10:35:00.000Z"
+}
+```
+
+#### 6. Get All Chat Messages
+
+**GET** `/chat-messages`
+
+Retrieves all chat messages with optional filtering.
+
+**Query Parameters:**
+
+- `conversationId` (optional): Filter by conversation ID
+- `userId` (optional): Filter by user ID
+
+**Examples:**
+
+```
+GET /chat-messages
+GET /chat-messages?conversationId=conv456
+GET /chat-messages?userId=user123
+```
+
+**Response (200 OK):**
+
+```json
+[
+  {
+    "_id": "64f1a2b3c4d5e6f7g8h9i0j2",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Hello, how are you?"
+      }
+    ],
+    "userId": "user123",
+    "conversationId": "conv456",
+    "createdAt": "2024-01-15T10:35:00.000Z",
+    "updatedAt": "2024-01-15T10:35:00.000Z"
+  }
+]
+```
+
+#### 7. Get Chat Message by ID
+
+**GET** `/chat-messages/:id`
+
+Retrieves a specific chat message by its ID.
+
+**Path Parameters:**
+
+- `id`: MongoDB ObjectId of the chat message
+
+**Example:**
+
+```
+GET /chat-messages/64f1a2b3c4d5e6f7g8h9i0j2
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "_id": "64f1a2b3c4d5e6f7g8h9i0j2",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hello, how are you?"
+    }
+  ],
+  "userId": "user123",
+  "conversationId": "conv456",
+  "createdAt": "2024-01-15T10:35:00.000Z",
+  "updatedAt": "2024-01-15T10:35:00.000Z"
+}
+```
+
+**Error Response (404 Not Found):**
+
+```json
+{
+  "statusCode": 404,
+  "message": "Chat message not found"
+}
+```
+
+## Data Models
+
+### ResearchDoc Schema
+
+| Field         | Type   | Required | Default | Description                                           |
+| ------------- | ------ | -------- | ------- | ----------------------------------------------------- |
+| `title`       | String | Yes      | -       | Document title                                        |
+| `content`     | String | Yes      | -       | Main document content                                 |
+| `sections`    | Array  | No       | -       | Array of section objects with `heading` and `content` |
+| `keyFindings` | Array  | No       | -       | Array of key finding strings                          |
+| `sources`     | Array  | No       | -       | Array of source objects with `title` and `url`        |
+| `category`    | String | No       | "Rust"  | Document category                                     |
+| `tags`        | Array  | No       | -       | Array of tag strings                                  |
+| `createdAt`   | Date   | Auto     | -       | Creation timestamp                                    |
+| `updatedAt`   | Date   | Auto     | -       | Last update timestamp                                 |
+
+### ChatMessage Schema
+
+| Field            | Type   | Required | Default | Description                                        |
+| ---------------- | ------ | -------- | ------- | -------------------------------------------------- |
+| `messages`       | Array  | Yes      | -       | Array of message objects with `role` and `content` |
+| `userId`         | String | No       | -       | User identifier                                    |
+| `conversationId` | String | No       | -       | Conversation identifier                            |
+| `createdAt`      | Date   | Auto     | -       | Creation timestamp                                 |
+| `updatedAt`      | Date   | Auto     | -       | Last update timestamp                              |
+
+## Error Handling
+
+The API uses standard HTTP status codes:
+
+- **200 OK**: Successful request
+- **201 Created**: Resource created successfully
+- **400 Bad Request**: Invalid request data
+- **404 Not Found**: Resource not found
+- **500 Internal Server Error**: Server error
+
+## Development
+
+### Project Structure
+
+```
+src/
+├── app.controller.ts      # Main API endpoints
+├── app.service.ts         # Business logic
+├── app.module.ts          # Application module configuration
+├── main.ts               # Application bootstrap
+└── schemas/
+    └── research-doc.schema.ts  # MongoDB schema definition
+```
+
+### Testing
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+# Run unit tests
+npm run test
+
+# Run e2e tests
+npm run test:e2e
+
+# Run tests with coverage
+npm run test:cov
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### Code Quality
 
-## Resources
+```bash
+# Run linter
+npm run lint
 
-Check out a few resources that may come in handy when working with NestJS:
+# Format code
+npm run format
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+## Database
 
-## Support
+The application uses MongoDB with Mongoose ODM. The default connection string is:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```
+mongodb://localhost:27017/nestjs-app
+```
 
-## Stay in touch
+To use a different MongoDB instance, update the connection string in `src/app.module.ts`.
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run tests and linting
+5. Submit a pull request
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+This project is licensed under the MIT License.
